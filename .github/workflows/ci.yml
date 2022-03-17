@@ -1,0 +1,20 @@
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: leshiy1295/gcc_linters
+    steps:
+    - uses: actions/checkout@v2 
+    - run: make build
+    - name: Build project
+      uses: actions/upload-artifact@v2
+      with:
+        path: build/iz1
+  test:
+    runs-on: ubuntu-latest
+    container: leshiy1295/gcc_linters
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2 
+      - run: make test
