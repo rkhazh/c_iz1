@@ -17,4 +17,11 @@ jobs:
     needs: [build]
     steps:
       - uses: actions/checkout@v2 
-      - run: make test
+      - run: make build && make test
+  getcov:
+    runs-on: ubuntu-latest
+    container: rkhazh/first_dock
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2 
+      - run: make build && make test && make getcov
