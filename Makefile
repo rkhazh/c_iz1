@@ -1,4 +1,4 @@
-.PHONY: build test
+.PHONY: build test getcov
 
 
 build:
@@ -8,6 +8,9 @@ build:
 	
 test:
 	"./build/tests/test_roads"
+
+getcov:
+	cd build && lcov -t "tests/test_roads" -o coverage.info -c -d roads/ && genhtml -o report coverage.info
 
 clean:
 	rm -rf build
