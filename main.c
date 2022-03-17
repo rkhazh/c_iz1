@@ -18,13 +18,22 @@ void stdIn_int(int* r){
         t = scanf("%d", r);
     } while(t!=1);
 }
+void stdIn_roadt(ROADTYPE* r){
+    size_t t = 0;
+    do{
+        printf("\n");
+        scanf("%*[^\n]");
+        t = scanf("%d", r);
+    } while(t!=1);
+}
 
 //Макрос для перегрузки процедуры
-#define stdIn(X)          \
-    _Generic((X),         \
-    int*: stdIn_int,      \
-    char*: stdIn_str,     \
-    default: stdIn_int    \
+#define stdIn(X)                \
+    _Generic((X),               \
+    int*: stdIn_int,            \
+    char*: stdIn_str,           \
+    ROADTYPE*: stdIn_roadt,     \
+    default: stdIn_int          \
 )(X)
 
 int main() {
@@ -49,7 +58,7 @@ int main() {
         printf("Enter road length:");
         stdIn(&(roads[i].road_length));
         printf("Enter road type:\n1 - ASPHALT\n2 - PLASTIC\n3 - RUBBLE");
-        stdIn_int(&(roads[i].road_type));
+        stdIn(&(roads[i].road_type));
         printf("Enter number of lanes:");
         stdIn(&(roads[i].number_of_lanes));
         printf("Enter quality:");
