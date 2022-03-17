@@ -11,6 +11,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         path: build/iz1
+
   test:
     runs-on: ubuntu-latest
     container: rkhazh/first_dock
@@ -18,10 +19,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
       - run: make build && make test
-  getcov:
-    runs-on: ubuntu-latest
-    container: rkhazh/first_dock
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v2 
-      - run: make build && make test && make getcov
