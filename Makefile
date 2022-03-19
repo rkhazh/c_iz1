@@ -1,4 +1,4 @@
-.PHONY: build test getcov
+.PHONY: build test getcov check clean
 
 
 build:

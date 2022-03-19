@@ -1,69 +1,31 @@
 #include <stdio.h>
-#include <malloc.h>
 #include "roads.h"
+#include <stdlib.h>
+#include <string.h>
 
-void stdIn_str(char r[]){
-    size_t t = 0;
-    do{
-        printf("\n");
-        scanf("%*[^\n]");
-        t = scanf("%s", r);
-    } while(t!=1);
-}
-void stdIn_int(int* r){
-    size_t t = 0;
-    do{
-        printf("\n");
-        scanf("%*[^\n]");
-        t = scanf("%d", r);
-    } while(t!=1);
-}
-void stdIn_roadt(ROADTYPE* r){
-    size_t t = 0;
-    do{
-        printf("\n");
-        scanf("%*[^\n]");
-        t = scanf("%d", r);
-    } while(t!=1);
-}
-
-//Макрос для перегрузки процедуры
-#define stdIn(X)                \
-    _Generic((X),               \
-    int*: stdIn_int,            \
-    char*: stdIn_str,           \
-    ROADTYPE*: stdIn_roadt,     \
-    default: stdIn_int          \
-)(X)
 
 int main() {
-    printf("Hello, World!\n" );
-    int N = 0;
-    printf("Enter roads count:");
-    {
-        size_t t = 0;
-        do {
-            t = scanf("%d", &N);
-            if((!!t) == 0){
-                scanf("%*[^\n]");
-            }
-        } while (t != 1 || N <= 0);
+    Road* road_map;
+    size_t N = 0;
+    road_map = getRoadsFromUser(stdin, &N);
+    if (road_map == NULL) {
+        return -1;
     }
-    Road* roads = malloc(sizeof(Road) * N);
-    for(size_t i = 0; i < N; i++) { //Ввод данных
-        printf("Enter starting point:");
-        stdIn(roads[i].from);
-        printf("Enter destination:");
-        stdIn(roads[i].to);
-        printf("Enter road length:");
-        stdIn(&(roads[i].road_length));
-        printf("Enter road type:\n1 - ASPHALT\n2 - PLASTIC\n3 - RUBBLE");
-        stdIn(&(roads[i].road_type));
-        printf("Enter number of lanes:");
-        stdIn(&(roads[i].number_of_lanes));
-        printf("Enter quality:");
-        stdIn(&(roads[i].quality));
+
+    size_t n_lanes_to_search = 0;
+    roadtype type_to_search = 0;
+    if (getSearchParams(stdin, &type_to_search, &n_lanes_to_search)) {
+        free(road_map);
+        return -1;
     }
-    printf("%f",Roads_GetQuality(roads, N, ASPHALT, 4));
+
+    double res = Roads_getAvgQuality(road_map, N, type_to_search, n_lanes_to_search);
+    if (res == -1){
+        free(road_map);
+        return -1;
+    }
+    printf("Average quality: %lf", res);
+
+    free(road_map);
     return 0;
 }
